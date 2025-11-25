@@ -21,3 +21,7 @@ When creating a pull request, always use the `pr-creator` agent. This ensures:
 - Branch creation is handled automatically if on main branch
 - All PR titles and descriptions are written in English
 - The authenticated user is automatically assigned to the PR
+
+## Git Commands
+
+When running git commands, do NOT use the `-C` option to specify the directory. The working directory is already set to the repository root, so commands like `git status` work directly without needing `git -C /path/to/repo status`.
