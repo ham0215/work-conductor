@@ -11,3 +11,10 @@ When committing changes, always use the `conventional-committer` agent. This ens
 - `Co-Authored-By: Claude <noreply@anthropic.com>` is always included
 
 If the changes being committed contain multiple distinct concerns or purposes, split them into separate commits—one per concern—rather than bundling everything into a single commit.
+
+## Pull Requests
+
+When creating a pull request, always use the `pr-creator` agent. This ensures:
+- PR titles follow the Conventional Commits specification
+- The repository's PR template is properly applied
+- Branch creation is handled automatically if on main branch
