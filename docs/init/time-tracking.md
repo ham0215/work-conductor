@@ -1,0 +1,5 @@
+- Record start and end of work attendance
+- Integrate with calendar information. Google Calendar first
+- Time not on the calendar is considered "main work" time
+- Work assignments are managed as master data, selectable in 30-minute increments
+- Work assignments are linked to the organization chart

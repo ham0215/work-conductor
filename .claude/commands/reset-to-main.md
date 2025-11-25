@@ -1,14 +1,14 @@
 # Reset to Main Branch
 
-ローカルブランチをmainに戻し、最新の状態にpullします。
+Reset local branch to main and pull the latest changes.
 
-## 手順
+## Steps
 
-1. まず、未コミットの変更があるか確認してください（`git status`）
-2. 未コミットの変更がある場合は、処理を中断し、以下のメッセージをユーザーに通知してください：
-   - 「未コミットの変更があります。変更をコミットまたはスタッシュしてから再度実行してください。」
-   - 変更のあるファイル一覧も表示してください
-3. 未コミットの変更がない場合は、以下を実行してください：
-   - `git checkout main` でmainブランチに切り替え
-   - `git pull` で最新の状態を取得
-4. 完了したら、現在のブランチと最新のコミット情報を表示してください
+1. First, check for uncommitted changes (`git status`)
+2. If there are uncommitted changes, abort the process and notify the user with:
+   - "You have uncommitted changes. Please commit or stash your changes before running again."
+   - Also display the list of changed files
+3. If there are no uncommitted changes, execute the following:
+   - `git checkout main` to switch to the main branch
+   - `git pull` to fetch the latest state
+4. When complete, display the current branch and latest commit information

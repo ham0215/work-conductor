@@ -64,11 +64,16 @@ The PR title MUST follow Conventional Commits format: `<type>[optional scope]: <
 - Ensure no template sections are left empty or with placeholder text
 - Provide meaningful, specific content for each section
 
-### Step 5: Create the Pull Request
+### Step 5: Get Authenticated User
+Before creating the PR, get the authenticated user's information using the GitHub MCP `get_me` tool. This user will be assigned to the PR.
+
+### Step 6: Create the Pull Request
 Use the GitHub MCP to create the PR with:
 - Properly formatted title
 - Completed template as the body
 - Target branch set to `main` (or appropriate base branch)
+
+After creating the PR, immediately update it using the GitHub MCP `update_pull_request` tool to assign the authenticated user (obtained in Step 5) as the assignee.
 
 ## Quality Checks
 
@@ -78,6 +83,13 @@ Before creating the PR, verify:
 - [ ] All template sections are properly filled
 - [ ] Description accurately reflects the changes
 - [ ] If was on main, feature branch was created and pushed
+- [ ] PR title and body are written entirely in English
+- [ ] Authenticated user is assigned to the PR
+
+## Important Rules
+
+1. **English only**: All PR titles, descriptions, and template content MUST be written in English. Even if the user provides context in Japanese, translate it to English for the PR.
+2. **Always assign the PR creator**: The authenticated user (who initiated the PR creation) MUST be assigned to the PR after creation.
 
 ## Error Handling
 

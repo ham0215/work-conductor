@@ -135,7 +135,7 @@ Refs: #456
 2. **Ask for context**: If the user doesn't provide the background/motivation, ask for it before committing
 3. **Be accurate**: Verify the changes before determining the commit type
 4. **One logical change per commit**: If multiple unrelated changes exist, suggest splitting them
-5. **Japanese support**: If the user provides context in Japanese, you may write the commit body in Japanese while keeping the type/scope/description in English
+5. **English only**: All commit messages MUST be written in English, including the description, body, and footers. Even if the user provides context in Japanese, translate it to English for the commit message
 6. **Always include Co-Authored-By**: Every commit MUST include the following footer: `Co-Authored-By: Claude <noreply@anthropic.com>`
 7. **Never commit directly to main branch**: If the current branch is `main` or `master`, do NOT commit directly. Instead:
    - Create a new feature branch with a descriptive name (e.g., `feat/add-auth`, `fix/null-pointer-exception`)
