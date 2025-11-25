@@ -64,12 +64,12 @@ Intelligent time tracking integrated with calendar and organizational data.
 
 ### Application Stack
 
-| Component | Technology |
-|-----------|------------|
-| Desktop App | Tauri (Rust + Web Frontend) |
-| Admin Web App | Web Application (SPA) |
-| Backend | GCP-based serverless architecture |
-| Infrastructure as Code | Terraform |
+| Component | Technology | Language/Framework |
+|-----------|------------|-------------------|
+| Desktop App | Tauri | Rust + TypeScript (React) |
+| Admin Web App | SPA | TypeScript (React) |
+| Backend API | Cloud Run | Go |
+| Infrastructure as Code | Terraform | HCL |
 
 ### Multi-tenancy
 
@@ -155,69 +155,6 @@ All infrastructure managed via Terraform:
    - Automatic notification routing
    - Content-based message grouping
    - Smart time classification
-
----
-
-## Non-Functional Requirements
-
-### Performance
-
-- Desktop app startup: < 3 seconds
-- API response time: < 500ms (p95)
-- Real-time sync latency: < 2 seconds
-
-### Security
-
-- End-to-end encryption for sensitive data
-- API keys encrypted at rest
-- SOC 2 compliance path
-- GDPR considerations for EU users
-
-### Scalability
-
-- Support 1000+ users per tenant
-- Horizontal scaling via GCP
-
-### Availability
-
-- 99.5% uptime SLA (MVP phase)
-- 99.9% uptime SLA (production)
-
----
-
-## Success Metrics
-
-### Primary KPIs
-
-| Metric | Target (MVP) |
-|--------|-------------|
-| Daily Active Users (DAU) | 100+ |
-| Time spent in app vs. chat tools | 60%+ |
-| Task completion rate | 70%+ |
-| User retention (30-day) | 40%+ |
-
-### Secondary Metrics
-
-- AI feature adoption rate
-- Average session duration
-- Time tracking accuracy
-
----
-
-## Risks and Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| User API key management complexity | Medium | Clear onboarding flow, secure storage |
-| Chat tool habit transition | High | Gradual migration tools, integration bridges |
-| Multi-tenant data isolation | Critical | Strict Firestore security rules, audit logging |
-| GCP free tier limits | Medium | Usage monitoring, graceful degradation |
-
----
-
-## Timeline Considerations
-
-This PRD does not include specific timelines. Implementation should be broken into phases as outlined in the MVP Scope section, with each phase validated before proceeding to the next.
 
 ---
 
