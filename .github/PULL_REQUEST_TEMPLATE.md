@@ -1,34 +1,34 @@
-## 対応イシュー
+## Related Issue
 
-<!-- 関連するIssue番号を記載してください -->
+<!-- Please enter the related Issue number -->
 closes #
 
-## 概要
+## Summary
 
-<!-- このPRで行った変更の概要を記載してください -->
+<!-- Please describe the summary of changes made in this PR -->
 
-## 変更内容
+## Changes
 
-<!-- 具体的な変更点をリストで記載してください -->
+<!-- Please list the specific changes -->
 -
 
-## テスト観点
+## Test Plan
 
-<!-- どのようなテストを行ったか、またはテストすべき観点を記載してください -->
+<!-- Please describe what tests were performed or what should be tested -->
 - [ ]
 
-## レビュー観点
+## Review Points
 
-<!-- レビュアーに特に見てほしいポイントを記載してください -->
+<!-- Please describe the points you want reviewers to focus on -->
 -
 
-## スクリーンショット（任意）
+## Screenshots (Optional)
 
-<!-- UIの変更がある場合はスクリーンショットを添付してください -->
+<!-- Please attach screenshots if there are UI changes -->
 
-## チェックリスト
+## Checklist
 
-- [ ] コードは適切にフォーマットされている
-- [ ] 必要なテストを追加・更新した
-- [ ] ドキュメントを更新した（必要な場合）
-- [ ] 破壊的変更がある場合は明記した
+- [ ] Code is properly formatted
+- [ ] Added or updated necessary tests
+- [ ] Updated documentation (if needed)
+- [ ] Breaking changes are documented (if any)

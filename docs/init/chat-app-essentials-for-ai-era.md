@@ -1,0 +1,9 @@
+- Currently, most of the work time is spent staying connected to chat tools like Slack
+- We want to maximize the time spent connected to this product instead
+- Tweet/post work updates, notify others as needed
+  - Even if the notification target is not explicitly specified, AI interprets the content and sends notifications
+  - Messages are grouped by content. Can also be specified explicitly
+- Seamlessly chat with AI in the same way as tweeting
+- Manually checking channels is outdated
+- A window for working with AI and a window for subscribed content
+  - Multiple windows stacked like cards

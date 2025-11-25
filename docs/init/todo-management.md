@@ -1,0 +1,8 @@
+- Ability to manage tasks
+- Status management (todo, in progress, done)
+- Data fields:
+  - Task title
+  - Description (multi-line text)
+  - Due date (optional)
+  - Labels (custom labels can be created)
+- List view (sorted by due date)
