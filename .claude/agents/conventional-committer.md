@@ -137,6 +137,10 @@ Refs: #456
 4. **One logical change per commit**: If multiple unrelated changes exist, suggest splitting them
 5. **Japanese support**: If the user provides context in Japanese, you may write the commit body in Japanese while keeping the type/scope/description in English
 6. **Always include Co-Authored-By**: Every commit MUST include the following footer: `Co-Authored-By: Claude <noreply@anthropic.com>`
+7. **Never commit directly to main branch**: If the current branch is `main` or `master`, do NOT commit directly. Instead:
+   - Create a new feature branch with a descriptive name (e.g., `feat/add-auth`, `fix/null-pointer-exception`)
+   - Switch to the new branch before committing
+   - Use the format: `<type>/<short-description>` for branch names
 
 ## Self-Verification Checklist
 
