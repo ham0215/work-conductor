@@ -67,9 +67,7 @@ export function LoginPage() {
           Sign in with Google
         </button>
 
-        <p className="login-footer">
-          Access restricted to authorized administrators only.
-        </p>
+        <p className="login-footer">Access restricted to authorized administrators only.</p>
       </div>
     </div>
   )

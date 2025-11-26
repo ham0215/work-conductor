@@ -44,7 +44,9 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
 .user-info .sign-out-btn:hover {

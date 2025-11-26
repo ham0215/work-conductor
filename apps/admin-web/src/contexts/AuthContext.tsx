@@ -84,7 +84,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setError(null)
       } catch (err) {
         console.error('Error processing user authentication:', err)
-        const errorMessage = err instanceof Error ? err.message : 'Failed to process user authentication'
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to process user authentication'
         setError(errorMessage)
         setUser(null)
       } finally {

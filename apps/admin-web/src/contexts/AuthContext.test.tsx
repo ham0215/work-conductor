@@ -89,9 +89,7 @@ describe('AuthContext', () => {
   it('throws error when useAuth is used outside provider', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    expect(() => render(<TestComponent />)).toThrow(
-      'useAuth must be used within an AuthProvider'
-    )
+    expect(() => render(<TestComponent />)).toThrow('useAuth must be used within an AuthProvider')
 
     consoleSpy.mockRestore()
   })
