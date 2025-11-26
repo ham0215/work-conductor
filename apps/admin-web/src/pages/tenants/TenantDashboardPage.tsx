@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { StatCard } from '../../components/StatCard'
 import { ActivityLog, type ActivityItem } from '../../components/ActivityLog'
+import '../../components/PageHeader.css'
 import './TenantDashboardPage.css'
 
 interface TenantStats {

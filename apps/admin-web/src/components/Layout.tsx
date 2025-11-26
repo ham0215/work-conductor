@@ -26,7 +26,7 @@ export function Layout() {
         </div>
       </header>
       <div className="layout-body">
-        <nav className="layout-sidebar">
+        <nav className="layout-sidebar" aria-label="Main navigation">
           <ul className="nav-menu">
             <li>
               <NavLink to="/" end className={({ isActive }) => (isActive ? 'active' : '')}>

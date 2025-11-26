@@ -52,7 +52,8 @@ export function StatCard({ title, value, icon, variant = 'default', trend }: Sta
         <span className="stat-card-value">{value.toLocaleString()}</span>
         {trend && (
           <span className="stat-card-trend">
-            +{trend.value} {trend.label}
+            {trend.value > 0 ? '+' : ''}
+            {trend.value} {trend.label}
           </span>
         )}
       </div>

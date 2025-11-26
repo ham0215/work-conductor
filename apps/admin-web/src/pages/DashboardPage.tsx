@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import '../components/PageHeader.css'
 import './DashboardPage.css'
 
 export function DashboardPage() {

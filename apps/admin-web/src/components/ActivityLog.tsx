@@ -36,6 +36,9 @@ function formatTimestamp(timestamp: string): string {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
 
+  if (diffMins < 1) {
+    return 'Just now'
+  }
   if (diffMins < 60) {
     return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`
   }
