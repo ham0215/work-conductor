@@ -60,17 +60,11 @@ resource "google_compute_backend_bucket" "admin_web" {
   enable_cdn  = true
 
   cdn_policy {
-    cache_mode        = "CACHE_ALL_STATIC"
-    default_ttl       = 3600  # 1 hour
-    max_ttl           = 86400 # 24 hours
-    client_ttl        = 3600  # 1 hour
-    negative_caching  = true
-
-    cache_key_policy {
-      include_host         = true
-      include_protocol     = true
-      include_query_string = false
-    }
+    cache_mode       = "CACHE_ALL_STATIC"
+    default_ttl      = 3600  # 1 hour
+    max_ttl          = 86400 # 24 hours
+    client_ttl       = 3600  # 1 hour
+    negative_caching = true
   }
 }
 
