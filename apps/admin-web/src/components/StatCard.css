@@ -1,0 +1,73 @@
+.stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.stat-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-card--success .stat-card-icon {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.stat-card--info .stat-card-icon {
+  background-color: #d1ecf1;
+  color: #17a2b8;
+}
+
+.stat-card--primary .stat-card-icon {
+  background-color: #cce5ff;
+  color: #0d6efd;
+}
+
+.stat-card--warning .stat-card-icon {
+  background-color: #fff3cd;
+  color: #ffc107;
+}
+
+.stat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-card-title {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.stat-card-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.2;
+}
+
+.stat-card-trend {
+  font-size: 0.75rem;
+  color: #28a745;
+}
