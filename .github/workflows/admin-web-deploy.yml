@@ -1,0 +1,120 @@
+name: Admin Web - Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/admin-web/**'
+      - '.github/workflows/admin-web-deploy.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'apps/admin-web/**'
+      - '.github/workflows/admin-web-deploy.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+env:
+  NODE_VERSION: '24'
+  WORKING_DIR: 'apps/admin-web'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: '${{ env.WORKING_DIR }}/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:run
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_ENVIRONMENT: ${{ github.event.inputs.environment || 'dev' }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-web-dist
+          path: ${{ env.WORKING_DIR }}/dist
+          retention-days: 7
+
+  deploy:
+    name: Deploy to GCS
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-web-dist
+          path: dist
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Storage
+        run: |
+          gsutil -m rsync -r -d dist gs://${{ vars.GCS_BUCKET_NAME }}
+
+      - name: Set cache headers for static assets
+        run: |
+          gsutil -m setmeta -r -h "Cache-Control:public, max-age=31536000, immutable" \
+            gs://${{ vars.GCS_BUCKET_NAME }}/assets/
+
+      - name: Set cache headers for HTML
+        run: |
+          gsutil -m setmeta -h "Cache-Control:no-cache, no-store, must-revalidate" \
+            gs://${{ vars.GCS_BUCKET_NAME }}/index.html
+
+      - name: Invalidate CDN cache
+        env:
+          DEPLOY_ENV: ${{ github.event.inputs.environment || 'dev' }}
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache admin-web-${DEPLOY_ENV}-url-map \
+            --path "/*" \
+            --async
