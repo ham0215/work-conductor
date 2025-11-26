@@ -103,8 +103,8 @@ jobs:
 
       - name: Set cache headers for static assets
         run: |
-          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" \
-            gs://${{ vars.GCS_BUCKET_NAME }}/assets/**
+          gsutil -m setmeta -r -h "Cache-Control:public, max-age=31536000, immutable" \
+            gs://${{ vars.GCS_BUCKET_NAME }}/assets/
 
       - name: Set cache headers for HTML
         run: |
@@ -112,7 +112,9 @@ jobs:
             gs://${{ vars.GCS_BUCKET_NAME }}/index.html
 
       - name: Invalidate CDN cache
+        env:
+          DEPLOY_ENV: ${{ github.event.inputs.environment || 'dev' }}
         run: |
-          gcloud compute url-maps invalidate-cdn-cache admin-web-${{ github.event.inputs.environment || 'dev' }}-url-map \
+          gcloud compute url-maps invalidate-cdn-cache admin-web-${DEPLOY_ENV}-url-map \
             --path "/*" \
             --async

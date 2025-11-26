@@ -22,12 +22,15 @@ resource "google_storage_bucket" "admin_web" {
     enabled = var.environment == "prod"
   }
 
-  lifecycle_rule {
-    condition {
-      num_newer_versions = 5
-    }
-    action {
-      type = "Delete"
+  dynamic "lifecycle_rule" {
+    for_each = var.environment == "prod" ? [1] : []
+    content {
+      condition {
+        num_newer_versions = 5
+      }
+      action {
+        type = "Delete"
+      }
     }
   }
 
