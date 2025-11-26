@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import './StatCard.css'
 
 type IconType = 'building' | 'check-circle' | 'users' | 'plus-circle'
