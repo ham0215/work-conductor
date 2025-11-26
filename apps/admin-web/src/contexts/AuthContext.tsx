@@ -7,15 +7,7 @@ import {
   type User,
 } from 'firebase/auth'
 import { auth } from '../services/firebase'
-import { AuthContext, type AuthContextType } from './auth-types'
-
-interface AuthUser {
-  uid: string
-  email: string | null
-  displayName: string | null
-  photoURL: string | null
-  isAdmin: boolean
-}
+import { AuthContext, type AuthContextType, type AuthUser } from './auth-types'
 
 const googleProvider = new GoogleAuthProvider()
 googleProvider.setCustomParameters({
@@ -57,8 +49,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const checkSession = () => {
       const now = Date.now()
       if (user && now - lastActivity > SESSION_TIMEOUT) {
-        firebaseSignOut(auth)
+        // Set user to null first for UI consistency before async signOut
+        setUser(null)
         setError('Session expired. Please sign in again.')
+        firebaseSignOut(auth)
       }
     }
 
@@ -88,8 +82,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const authUser = await processUser(firebaseUser)
         setUser(authUser)
         setError(null)
-      } catch {
-        setError('Failed to process user authentication')
+      } catch (err) {
+        console.error('Error processing user authentication:', err)
+        const errorMessage = err instanceof Error ? err.message : 'Failed to process user authentication'
+        setError(errorMessage)
         setUser(null)
       } finally {
         setLoading(false)
@@ -103,16 +99,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setError(null)
       setLoading(true)
-      const result = await signInWithPopup(auth, googleProvider)
-      const authUser = await processUser(result.user)
-      setUser(authUser)
+      // User state will be updated via onAuthStateChanged callback
+      await signInWithPopup(auth, googleProvider)
       setLastActivity(Date.now())
     } catch (err) {
+      console.error('Error during Google sign-in:', err)
       const errorMessage = err instanceof Error ? err.message : 'Failed to sign in'
       setError(errorMessage)
-      throw err
-    } finally {
       setLoading(false)
+      throw err
     }
   }
 
