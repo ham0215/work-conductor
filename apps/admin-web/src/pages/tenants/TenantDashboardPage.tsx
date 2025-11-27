@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { StatCard } from '../../components/StatCard'
 import { ActivityLog, type ActivityItem } from '../../components/ActivityLog'
 import '../../components/PageHeader.css'
@@ -87,9 +88,14 @@ export function TenantDashboardPage() {
 
   return (
     <div className="tenant-dashboard">
-      <div className="page-header">
-        <h2>Tenant Dashboard</h2>
-        <p className="page-description">Overview of all tenants and recent activity</p>
+      <div className="page-header-actions">
+        <div className="page-header">
+          <h2>Tenant Dashboard</h2>
+          <p className="page-description">Overview of all tenants and recent activity</p>
+        </div>
+        <Link to="/tenants/list" className="btn-secondary-link">
+          View All Tenants
+        </Link>
       </div>
 
       <div className="stats-grid">
