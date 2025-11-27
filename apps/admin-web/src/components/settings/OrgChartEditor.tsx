@@ -40,6 +40,9 @@ function buildTree(flatNodes: FlatNode[]): OrgNode[] {
       if (parent) {
         if (!parent.children) parent.children = []
         parent.children.push(node)
+      } else {
+        // Orphaned node: treat as root to prevent data loss
+        roots.push(node)
       }
     }
   })
@@ -103,9 +106,14 @@ export function OrgChartEditor({ nodes, onChange }: OrgChartEditorProps) {
     if (!newNode.name.trim() || !newNode.title.trim()) return
     idCounterRef.current += 1
     const id = `node-new-${idCounterRef.current}`
+    let newLevel = 0
+    if (newNode.parentId) {
+      const parentNode = flatNodes.find((n) => n.id === newNode.parentId)
+      if (parentNode) newLevel = parentNode.level + 1
+    }
     const updated: FlatNode[] = [
       ...flatNodes,
-      { id, name: newNode.name, title: newNode.title, parentId: newNode.parentId, level: 0 },
+      { id, name: newNode.name, title: newNode.title, parentId: newNode.parentId, level: newLevel },
     ]
     onChange(buildTree(updated))
     setIsAdding(false)
@@ -164,6 +172,7 @@ export function OrgChartEditor({ nodes, onChange }: OrgChartEditorProps) {
                 className="btn-icon"
                 onClick={() => handleStartAdd(node.id)}
                 title="Add subordinate"
+                aria-label={`Add subordinate to ${node.name}`}
               >
                 + Add
               </button>
@@ -172,6 +181,7 @@ export function OrgChartEditor({ nodes, onChange }: OrgChartEditorProps) {
                 className="btn-icon"
                 onClick={() => handleEdit(node)}
                 title="Edit"
+                aria-label={`Edit ${node.name}`}
               >
                 Edit
               </button>
@@ -180,6 +190,7 @@ export function OrgChartEditor({ nodes, onChange }: OrgChartEditorProps) {
                 className="btn-icon btn-danger"
                 onClick={() => handleDelete(node.id)}
                 title="Delete"
+                aria-label={`Delete ${node.name}`}
               >
                 Delete
               </button>

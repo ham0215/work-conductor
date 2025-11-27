@@ -115,6 +115,7 @@ export function CustomLabelEditor({ labels, onChange }: CustomLabelEditorProps) 
                       className={`color-option ${editForm.color === color ? 'selected' : ''}`}
                       style={{ backgroundColor: color }}
                       onClick={() => setEditForm({ ...editForm, color })}
+                      aria-label={`Select color ${color}`}
                     />
                   ))}
                 </div>
@@ -147,6 +148,7 @@ export function CustomLabelEditor({ labels, onChange }: CustomLabelEditorProps) 
                     className="btn-icon"
                     onClick={() => handleEdit(label)}
                     title="Edit"
+                    aria-label={`Edit label ${label.name}`}
                   >
                     Edit
                   </button>
@@ -155,6 +157,7 @@ export function CustomLabelEditor({ labels, onChange }: CustomLabelEditorProps) 
                     className="btn-icon btn-danger"
                     onClick={() => handleDelete(label.id)}
                     title="Delete"
+                    aria-label={`Delete label ${label.name}`}
                   >
                     Delete
                   </button>
@@ -198,6 +201,7 @@ export function CustomLabelEditor({ labels, onChange }: CustomLabelEditorProps) 
                 className={`color-option ${newLabel.color === color ? 'selected' : ''}`}
                 style={{ backgroundColor: color }}
                 onClick={() => setNewLabel({ ...newLabel, color })}
+                aria-label={`Select color ${color}`}
               />
             ))}
           </div>

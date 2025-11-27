@@ -130,6 +130,7 @@ export function WorkCategoryEditor({ categories, onChange }: WorkCategoryEditorP
                       className={`color-option ${editForm.color === color ? 'selected' : ''}`}
                       style={{ backgroundColor: color }}
                       onClick={() => setEditForm({ ...editForm, color })}
+                      aria-label={`Select color ${color}`}
                     />
                   ))}
                 </div>
@@ -164,6 +165,11 @@ export function WorkCategoryEditor({ categories, onChange }: WorkCategoryEditorP
                     className="btn-icon"
                     onClick={() => handleToggleActive(category.id)}
                     title={category.isActive ? 'Deactivate' : 'Activate'}
+                    aria-label={
+                      category.isActive
+                        ? `Deactivate category ${category.name}`
+                        : `Activate category ${category.name}`
+                    }
                   >
                     {category.isActive ? 'Deactivate' : 'Activate'}
                   </button>
@@ -172,6 +178,7 @@ export function WorkCategoryEditor({ categories, onChange }: WorkCategoryEditorP
                     className="btn-icon"
                     onClick={() => handleEdit(category)}
                     title="Edit"
+                    aria-label={`Edit category ${category.name}`}
                   >
                     Edit
                   </button>
@@ -180,6 +187,7 @@ export function WorkCategoryEditor({ categories, onChange }: WorkCategoryEditorP
                     className="btn-icon btn-danger"
                     onClick={() => handleDelete(category.id)}
                     title="Delete"
+                    aria-label={`Delete category ${category.name}`}
                   >
                     Delete
                   </button>
@@ -223,6 +231,7 @@ export function WorkCategoryEditor({ categories, onChange }: WorkCategoryEditorP
                 className={`color-option ${newCategory.color === color ? 'selected' : ''}`}
                 style={{ backgroundColor: color }}
                 onClick={() => setNewCategory({ ...newCategory, color })}
+                aria-label={`Select color ${color}`}
               />
             ))}
           </div>
