@@ -13,6 +13,7 @@ import {
   TenantDeactivatePage,
   TenantSettingsPage,
 } from './pages/tenants'
+import { UserListPage } from './pages/users'
 import './App.css'
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/tenants/:id/edit" element={<TenantEditPage />} />
             <Route path="/tenants/:id/deactivate" element={<TenantDeactivatePage />} />
             <Route path="/tenants/:id/settings" element={<TenantSettingsPage />} />
+            <Route path="/users" element={<UserListPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
