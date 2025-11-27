@@ -246,7 +246,16 @@ export function UserListPage() {
   }
 
   const handleExport = () => {
-    const headers = ['Name', 'Email', 'Status', 'Role', 'Tenant', 'Department', 'Last Login', 'Created']
+    const headers = [
+      'Name',
+      'Email',
+      'Status',
+      'Role',
+      'Tenant',
+      'Department',
+      'Last Login',
+      'Created',
+    ]
     const csvData = filteredUsers.map((user) => [
       user.displayName,
       user.email,
@@ -258,7 +267,9 @@ export function UserListPage() {
       formatDate(user.createdAt),
     ])
 
-    const csvContent = [headers, ...csvData].map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n')
+    const csvContent = [headers, ...csvData]
+      .map((row) => row.map((cell) => `"${cell}"`).join(','))
+      .join('\n')
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
@@ -269,7 +280,10 @@ export function UserListPage() {
   }
 
   const hasActiveFilters =
-    filters.search !== '' || filters.status !== 'all' || filters.role !== 'all' || filters.tenantId !== 'all'
+    filters.search !== '' ||
+    filters.status !== 'all' ||
+    filters.role !== 'all' ||
+    filters.tenantId !== 'all'
 
   if (loading) {
     return (
@@ -288,7 +302,12 @@ export function UserListPage() {
           <p className="page-description">Manage user accounts across all tenants</p>
         </div>
         <div className="header-actions">
-          <button type="button" className="btn-secondary" onClick={handleExport} disabled={filteredUsers.length === 0}>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={handleExport}
+            disabled={filteredUsers.length === 0}
+          >
             <svg
               width="16"
               height="16"
@@ -434,7 +453,9 @@ export function UserListPage() {
                         <div className="user-details">
                           <span className="user-name">{user.displayName}</span>
                           <span className="user-email">{user.email}</span>
-                          {user.department && <span className="user-department">{user.department}</span>}
+                          {user.department && (
+                            <span className="user-department">{user.department}</span>
+                          )}
                         </div>
                       </div>
                     </td>
