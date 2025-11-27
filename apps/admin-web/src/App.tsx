@@ -5,7 +5,13 @@ import { Layout } from './components/Layout'
 import { LoginPage } from './pages/LoginPage'
 import { UnauthorizedPage } from './pages/UnauthorizedPage'
 import { DashboardPage } from './pages/DashboardPage'
-import { TenantDashboardPage } from './pages/tenants'
+import {
+  TenantDashboardPage,
+  TenantListPage,
+  TenantCreatePage,
+  TenantEditPage,
+  TenantDeactivatePage,
+} from './pages/tenants'
 import './App.css'
 
 function App() {
@@ -24,6 +30,10 @@ function App() {
           >
             <Route path="/" element={<DashboardPage />} />
             <Route path="/tenants" element={<TenantDashboardPage />} />
+            <Route path="/tenants/list" element={<TenantListPage />} />
+            <Route path="/tenants/new" element={<TenantCreatePage />} />
+            <Route path="/tenants/:id/edit" element={<TenantEditPage />} />
+            <Route path="/tenants/:id/deactivate" element={<TenantDeactivatePage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

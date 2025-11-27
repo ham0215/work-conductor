@@ -1,1 +1,5 @@
 export { TenantDashboardPage } from './TenantDashboardPage'
+export { TenantListPage } from './TenantListPage'
+export { TenantCreatePage } from './TenantCreatePage'
+export { TenantEditPage } from './TenantEditPage'
+export { TenantDeactivatePage } from './TenantDeactivatePage'
