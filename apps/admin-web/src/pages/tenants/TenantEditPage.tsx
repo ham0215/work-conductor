@@ -104,7 +104,11 @@ export function TenantEditPage() {
           <h2>Error</h2>
           <p className="page-description">{error || 'Tenant not found'}</p>
         </div>
-        <button type="button" className="btn btn-secondary" onClick={() => navigate('/tenants/list')}>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => navigate('/tenants/list')}
+        >
           Back to Tenants
         </button>
       </div>

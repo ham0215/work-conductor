@@ -34,7 +34,12 @@ export function TenantCreatePage() {
         <p className="page-description">Add a new tenant organization</p>
       </div>
 
-      <TenantForm onSubmit={handleSubmit} onCancel={handleCancel} submitLabel="Create Tenant" isSubmitting={isSubmitting} />
+      <TenantForm
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        submitLabel="Create Tenant"
+        isSubmitting={isSubmitting}
+      />
     </div>
   )
 }

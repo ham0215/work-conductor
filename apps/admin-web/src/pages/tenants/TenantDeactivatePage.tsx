@@ -112,7 +112,11 @@ export function TenantDeactivatePage() {
           <h2>Error</h2>
           <p className="page-description">{error || 'Tenant not found'}</p>
         </div>
-        <button type="button" className="btn btn-secondary" onClick={() => navigate('/tenants/list')}>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => navigate('/tenants/list')}
+        >
           Back to Tenants
         </button>
       </div>
@@ -145,8 +149,8 @@ export function TenantDeactivatePage() {
 
         <h3>Are you sure you want to deactivate this tenant?</h3>
         <p className="description">
-          Deactivating a tenant will immediately suspend all user access. Users will not be able to log in
-          or access any data until the tenant is reactivated.
+          Deactivating a tenant will immediately suspend all user access. Users will not be able to
+          log in or access any data until the tenant is reactivated.
         </p>
 
         <div className="tenant-info">
@@ -177,8 +181,8 @@ export function TenantDeactivatePage() {
               disabled={isSubmitting}
             />
             <span>
-              I understand that this action will suspend all {tenant.userCount} user(s) from accessing the
-              platform
+              I understand that this action will suspend all {tenant.userCount} user(s) from
+              accessing the platform
             </span>
           </label>
         </div>
@@ -192,7 +196,12 @@ export function TenantDeactivatePage() {
           >
             {isSubmitting ? 'Deactivating...' : 'Deactivate Tenant'}
           </button>
-          <button type="button" className="btn btn-secondary" onClick={handleCancel} disabled={isSubmitting}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+          >
             Cancel
           </button>
         </div>

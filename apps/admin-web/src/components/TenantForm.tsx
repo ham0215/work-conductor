@@ -38,8 +38,9 @@ function validateForm(data: TenantFormData): FormErrors {
 
   if (!data.slug.trim()) {
     errors.slug = 'Slug is required'
-  } else if (!/^[a-z0-9-]+$/.test(data.slug)) {
-    errors.slug = 'Slug can only contain lowercase letters, numbers, and hyphens'
+  } else if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(data.slug)) {
+    errors.slug =
+      'Slug can only contain lowercase letters, numbers, and hyphens (no leading/trailing/consecutive hyphens)'
   } else if (data.slug.length < 2) {
     errors.slug = 'Slug must be at least 2 characters'
   } else if (data.slug.length > 50) {
@@ -203,7 +204,12 @@ export function TenantForm({
           <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : submitLabel}
           </button>
-          <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={isSubmitting}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={onCancel}
+            disabled={isSubmitting}
+          >
             Cancel
           </button>
         </div>
