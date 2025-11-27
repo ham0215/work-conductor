@@ -252,7 +252,12 @@ export function UserActivityModal({ isOpen, user, onClose }: UserActivityModalPr
       >
         <div className="modal-header">
           <h3 id="activity-modal-title">Activity Log</h3>
-          <button type="button" className="modal-close" onClick={handleClose} aria-label="Close modal">
+          <button
+            type="button"
+            className="modal-close"
+            onClick={handleClose}
+            aria-label="Close modal"
+          >
             <svg
               width="20"
               height="20"
