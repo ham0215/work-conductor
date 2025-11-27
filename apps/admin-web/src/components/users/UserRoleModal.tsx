@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { User, UserRole } from '../../types/user'
 import './UserRoleModal.css'
 
@@ -44,6 +44,13 @@ export function UserRoleModal({ isOpen, user, onClose, onUpdate }: UserRoleModal
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Sync selectedRole when user prop changes
+  useEffect(() => {
+    if (user) {
+      setSelectedRole(user.role)
+    }
+  }, [user])
+
   const handleSubmit = async () => {
     if (!user) return
     if (selectedRole === user.role) {
@@ -63,11 +70,25 @@ export function UserRoleModal({ isOpen, user, onClose, onUpdate }: UserRoleModal
     }
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setSelectedRole(user?.role || 'member')
     setError(null)
     onClose()
-  }
+  }, [user?.role, onClose])
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, handleClose])
 
   if (!isOpen || !user) return null
 

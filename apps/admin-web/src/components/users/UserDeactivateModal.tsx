@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { User } from '../../types/user'
 import './UserDeactivateModal.css'
 
@@ -20,7 +20,7 @@ export function UserDeactivateModal({
   const [error, setError] = useState<string | null>(null)
 
   const expectedConfirmText = 'DEACTIVATE'
-  const isConfirmed = confirmText === expectedConfirmText
+  const isConfirmed = confirmText.toUpperCase() === expectedConfirmText
 
   const handleSubmit = async () => {
     if (!user || !isConfirmed) return
@@ -37,11 +37,25 @@ export function UserDeactivateModal({
     }
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setConfirmText('')
     setError(null)
     onClose()
-  }
+  }, [onClose])
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, handleClose])
 
   if (!isOpen || !user) return null
 
@@ -129,13 +143,13 @@ export function UserDeactivateModal({
 
           <div className="confirm-section">
             <label htmlFor="confirm-input">
-              Type <strong>{expectedConfirmText}</strong> to confirm
+              Type <strong>{expectedConfirmText}</strong> to confirm (case-insensitive)
             </label>
             <input
               id="confirm-input"
               type="text"
               value={confirmText}
-              onChange={(e) => setConfirmText(e.target.value.toUpperCase())}
+              onChange={(e) => setConfirmText(e.target.value)}
               placeholder={expectedConfirmText}
               disabled={submitting}
               autoComplete="off"

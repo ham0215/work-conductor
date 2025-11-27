@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import type { User } from '../../types/user'
 import './UserActivityModal.css'
 
@@ -201,6 +201,10 @@ export function UserActivityModal({ isOpen, user, onClose }: UserActivityModalPr
   const [activities, setActivities] = useState<ActivityLogEntry[]>([])
   const [loading, setLoading] = useState(true)
 
+  const handleClose = useCallback(() => {
+    onClose()
+  }, [onClose])
+
   useEffect(() => {
     if (!isOpen || !user) return
 
@@ -221,10 +225,24 @@ export function UserActivityModal({ isOpen, user, onClose }: UserActivityModalPr
     }
   }, [isOpen, user])
 
+  // Handle Escape key to close modal
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, handleClose])
+
   if (!isOpen || !user) return null
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={handleClose}>
       <div
         className="modal-content activity-modal"
         onClick={(e) => e.stopPropagation()}
@@ -234,7 +252,7 @@ export function UserActivityModal({ isOpen, user, onClose }: UserActivityModalPr
       >
         <div className="modal-header">
           <h3 id="activity-modal-title">Activity Log</h3>
-          <button type="button" className="modal-close" onClick={onClose} aria-label="Close modal">
+          <button type="button" className="modal-close" onClick={handleClose} aria-label="Close modal">
             <svg
               width="20"
               height="20"
@@ -308,7 +326,7 @@ export function UserActivityModal({ isOpen, user, onClose }: UserActivityModalPr
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn-secondary" onClick={onClose}>
+          <button type="button" className="btn-secondary" onClick={handleClose}>
             Close
           </button>
         </div>

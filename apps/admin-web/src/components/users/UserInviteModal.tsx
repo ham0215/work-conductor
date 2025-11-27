@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { UserRole } from '../../types/user'
 import './UserInviteModal.css'
 
@@ -38,14 +38,14 @@ export function UserInviteModal({ isOpen, onClose, onInvite, tenants }: UserInvi
       return
     }
 
-    if (!tenantId) {
-      setError('Please select a tenant')
-      return
-    }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email address')
+      return
+    }
+
+    if (!tenantId) {
+      setError('Please select a tenant')
       return
     }
 
@@ -65,14 +65,28 @@ export function UserInviteModal({ isOpen, onClose, onInvite, tenants }: UserInvi
     }
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setEmail('')
     setRole('member')
     setTenantId('')
     setDepartment('')
     setError(null)
     onClose()
-  }
+  }, [onClose])
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, handleClose])
 
   if (!isOpen) return null
 
