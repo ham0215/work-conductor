@@ -11,6 +11,7 @@ import {
   TenantCreatePage,
   TenantEditPage,
   TenantDeactivatePage,
+  TenantSettingsPage,
 } from './pages/tenants'
 import './App.css'
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/tenants/new" element={<TenantCreatePage />} />
             <Route path="/tenants/:id/edit" element={<TenantEditPage />} />
             <Route path="/tenants/:id/deactivate" element={<TenantDeactivatePage />} />
+            <Route path="/tenants/:id/settings" element={<TenantSettingsPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
