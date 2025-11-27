@@ -1,6 +1,13 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import type { User, UserFilters, UserStatus, UserRole } from '../../types/user'
+import {
+  UserInviteModal,
+  UserRoleModal,
+  UserDeactivateModal,
+  UserActivityModal,
+} from '../../components/users'
+import type { InviteData } from '../../components/users'
 import '../../components/PageHeader.css'
 import './UserListPage.css'
 
@@ -152,6 +159,13 @@ export function UserListPage() {
   })
   const searchInputRef = useRef<HTMLInputElement>(null)
 
+  // Modal states
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false)
+  const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false)
+  const [isActivityModalOpen, setIsActivityModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true)
@@ -282,6 +296,71 @@ export function UserListPage() {
     setTimeout(() => URL.revokeObjectURL(url), 100)
   }
 
+  // Modal handlers
+  const handleOpenRoleModal = (user: User) => {
+    setSelectedUser(user)
+    setIsRoleModalOpen(true)
+  }
+
+  const handleOpenDeactivateModal = (user: User) => {
+    setSelectedUser(user)
+    setIsDeactivateModalOpen(true)
+  }
+
+  const handleOpenActivityModal = (user: User) => {
+    setSelectedUser(user)
+    setIsActivityModalOpen(true)
+  }
+
+  const handleCloseModals = () => {
+    setIsInviteModalOpen(false)
+    setIsRoleModalOpen(false)
+    setIsDeactivateModalOpen(false)
+    setIsActivityModalOpen(false)
+    setSelectedUser(null)
+  }
+
+  const handleInviteUser = async (data: InviteData) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const tenant = tenants.find((t) => t.id === data.tenantId)
+    const newUser: User = {
+      id: String(Date.now()),
+      email: data.email,
+      displayName: data.email.split('@')[0],
+      status: 'pending',
+      role: data.role,
+      tenantId: data.tenantId,
+      tenantName: tenant?.name || 'Unknown',
+      department: data.department,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+    setUsers((prev) => [newUser, ...prev])
+  }
+
+  const handleUpdateRole = async (userId: string, newRole: UserRole) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === userId ? { ...user, role: newRole, updatedAt: new Date().toISOString() } : user
+      )
+    )
+  }
+
+  const handleDeactivateUser = async (userId: string) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === userId
+          ? { ...user, status: 'inactive' as UserStatus, updatedAt: new Date().toISOString() }
+          : user
+      )
+    )
+  }
+
   const hasActiveFilters =
     filters.search !== '' ||
     filters.status !== 'all' ||
@@ -325,6 +404,23 @@ export function UserListPage() {
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             Export CSV
+          </button>
+          <button type="button" className="btn-primary" onClick={() => setIsInviteModalOpen(true)}>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="8.5" cy="7" r="4" />
+              <line x1="20" y1="8" x2="20" y2="14" />
+              <line x1="23" y1="11" x2="17" y2="11" />
+            </svg>
+            Invite User
           </button>
         </div>
       </div>
@@ -423,6 +519,7 @@ export function UserListPage() {
                   <th>Role</th>
                   <th>Tenant</th>
                   <th>Last Login</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -458,6 +555,74 @@ export function UserListPage() {
                       </Link>
                     </td>
                     <td className="last-login">{formatDateTime(user.lastLoginAt)}</td>
+                    <td>
+                      <div className="actions-cell">
+                        <button
+                          type="button"
+                          className="btn-icon"
+                          title="View activity"
+                          aria-label={`View activity for ${user.displayName}`}
+                          onClick={() => handleOpenActivityModal(user)}
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-icon"
+                          title="Change role"
+                          aria-label={`Change role for ${user.displayName}`}
+                          onClick={() => handleOpenRoleModal(user)}
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            aria-hidden="true"
+                          >
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                          </svg>
+                        </button>
+                        {user.status !== 'inactive' && (
+                          <button
+                            type="button"
+                            className="btn-icon danger"
+                            title="Deactivate user"
+                            aria-label={`Deactivate ${user.displayName}`}
+                            onClick={() => handleOpenDeactivateModal(user)}
+                          >
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              aria-hidden="true"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -513,6 +678,34 @@ export function UserListPage() {
           </>
         )}
       </div>
+
+      {/* Modals */}
+      <UserInviteModal
+        isOpen={isInviteModalOpen}
+        onClose={handleCloseModals}
+        onInvite={handleInviteUser}
+        tenants={tenants}
+      />
+
+      <UserRoleModal
+        isOpen={isRoleModalOpen}
+        user={selectedUser}
+        onClose={handleCloseModals}
+        onUpdate={handleUpdateRole}
+      />
+
+      <UserDeactivateModal
+        isOpen={isDeactivateModalOpen}
+        user={selectedUser}
+        onClose={handleCloseModals}
+        onDeactivate={handleDeactivateUser}
+      />
+
+      <UserActivityModal
+        isOpen={isActivityModalOpen}
+        user={selectedUser}
+        onClose={handleCloseModals}
+      />
     </div>
   )
 }
