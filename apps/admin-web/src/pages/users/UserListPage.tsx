@@ -182,7 +182,7 @@ export function UserListPage() {
         const matchesSearch =
           user.displayName.toLowerCase().includes(searchLower) ||
           user.email.toLowerCase().includes(searchLower) ||
-          user.department?.toLowerCase().includes(searchLower)
+          user.department?.toLowerCase()?.includes(searchLower)
         if (!matchesSearch) return false
       }
 
@@ -246,6 +246,8 @@ export function UserListPage() {
   }
 
   const handleExport = () => {
+    const escapeCsvCell = (cell: string) => `"${String(cell).replace(/"/g, '""')}"`
+
     const headers = [
       'Name',
       'Email',
@@ -268,15 +270,16 @@ export function UserListPage() {
     ])
 
     const csvContent = [headers, ...csvData]
-      .map((row) => row.map((cell) => `"${cell}"`).join(','))
+      .map((row) => row.map((cell) => escapeCsvCell(cell)).join(','))
       .join('\n')
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
+    const url = URL.createObjectURL(blob)
+    link.href = url
     link.download = `users-export-${new Date().toISOString().split('T')[0]}.csv`
     link.click()
-    URL.revokeObjectURL(link.href)
+    setTimeout(() => URL.revokeObjectURL(url), 100)
   }
 
   const hasActiveFilters =
@@ -323,21 +326,6 @@ export function UserListPage() {
             </svg>
             Export CSV
           </button>
-          <Link to="/users/new" className="btn-primary">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add User
-          </Link>
         </div>
       </div>
 
@@ -435,7 +423,6 @@ export function UserListPage() {
                   <th>Role</th>
                   <th>Tenant</th>
                   <th>Last Login</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -444,7 +431,7 @@ export function UserListPage() {
                     <td>
                       <div className="user-info">
                         {user.photoURL ? (
-                          <img src={user.photoURL} alt="" className="user-avatar" />
+                          <img src={user.photoURL} alt={user.displayName} className="user-avatar" />
                         ) : (
                           <div className="user-avatar-placeholder">
                             {user.displayName.charAt(0).toUpperCase()}
@@ -466,55 +453,11 @@ export function UserListPage() {
                       <span className={`role-badge ${user.role}`}>{user.role}</span>
                     </td>
                     <td>
-                      <Link to={`/tenants/${user.tenantId}/edit`} className="tenant-link">
+                      <Link to={`/tenants/${user.tenantId}/settings`} className="tenant-link">
                         {user.tenantName}
                       </Link>
                     </td>
                     <td className="last-login">{formatDateTime(user.lastLoginAt)}</td>
-                    <td>
-                      <div className="actions-cell">
-                        <button
-                          type="button"
-                          className="btn-icon"
-                          title="Edit user"
-                          aria-label={`Edit ${user.displayName}`}
-                        >
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            aria-hidden="true"
-                          >
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                          </svg>
-                        </button>
-                        {user.status !== 'inactive' && (
-                          <button
-                            type="button"
-                            className="btn-icon danger"
-                            title="Deactivate user"
-                            aria-label={`Deactivate ${user.displayName}`}
-                          >
-                            <svg
-                              width="14"
-                              height="14"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              aria-hidden="true"
-                            >
-                              <circle cx="12" cy="12" r="10" />
-                              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
-                            </svg>
-                          </button>
-                        )}
-                      </div>
-                    </td>
                   </tr>
                 ))}
               </tbody>
