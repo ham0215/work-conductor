@@ -25,3 +25,53 @@ When creating a pull request, always use the `pr-creator` agent. This ensures:
 ## Git Commands
 
 When running git commands, do NOT use the `-C` option to specify the directory. The working directory is already set to the repository root, so commands like `git status` work directly without needing `git -C /path/to/repo status`.
+
+## AI Autonomous Development Process
+
+This repository implements an AI-driven development process where AI agents handle development, review, and quality assurance autonomously.
+
+### Development Commands
+
+Use these slash commands to execute the development workflow:
+
+| Command | Purpose |
+|---------|---------|
+| `/dev-start <issue>` | Start development from a GitHub Issue |
+| `/dev-check` | Run comprehensive quality checks |
+| `/dev-review-fix <pr>` | Address PR review comments |
+| `/dev-ci-fix <pr>` | Fix CI pipeline failures |
+
+### Development Flow
+
+When developing features from Issues, follow this process:
+
+1. **Start**: Use `/dev-start <issue-number>` to begin
+2. **Design**: `architect-ai` creates technical design
+3. **Review**: `design-document-reviewer` and `design-security-reviewer` validate design
+4. **Implement**: `developer-ai` writes code with guidance from `language-framework-expert`
+5. **Check**: `/dev-check` runs all quality agents:
+   - `sast-agent` - Security static analysis
+   - `coverage-monitor` - Test coverage validation
+   - `whitebox-test-reviewer` - Code path testing
+   - `blackbox-test-reviewer` - Requirements traceability
+   - `common-sense-agent` - UX and safety review
+6. **PR**: `pr-creator` creates the pull request
+7. **Review Fix**: `/dev-review-fix <pr>` addresses review comments
+8. **CI Fix**: `/dev-ci-fix <pr>` resolves CI failures
+
+### Agent Usage Guidelines
+
+- **Never skip quality checks** - All agents must pass before PR creation
+- **Iterate on issues** - If agents find problems, fix them before proceeding
+- **Parallel execution** - Run independent agents in parallel for efficiency
+- **Ask when uncertain** - If requirements are unclear, ask before implementing
+
+### Available Agents
+
+| Team | Agents |
+|------|--------|
+| Design | `architect-ai`, `design-document-reviewer`, `design-security-reviewer` |
+| Implementation | `developer-ai`, `language-framework-expert` |
+| Testing | `acceptance-test-creator`, `acceptance-test-reviewer`, `whitebox-test-reviewer`, `blackbox-test-reviewer`, `coverage-monitor` |
+| Security | `sast-agent`, `dast-agent` |
+| Quality | `common-sense-agent`, `e2e-test-runner` |
