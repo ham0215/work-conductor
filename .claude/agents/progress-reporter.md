@@ -125,13 +125,20 @@ Brief description of the project and its goals.
 |--------|-------|-------------|
 | ✅/❌ | #XX | Description |
 
-### Implemented Code
-```
-Directory structure of implemented code
-```
+### ⚙️ Backend API (Go)
+**Progress: X/Y Issues completed (Z%)**
+
+| Status | Issue | Description |
+|--------|-------|-------------|
+| ✅/❌ | #XX | Description |
 
 ### 🏗️ Infrastructure (Terraform)
 - List of infrastructure files/modules
+
+### Implemented Code
+~~~
+Directory structure of implemented code
+~~~
 
 ---
 
