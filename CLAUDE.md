@@ -54,7 +54,9 @@ When developing features from Issues, follow this process:
    - `coverage-monitor` - Test coverage validation
    - `whitebox-test-reviewer` - Code path testing
    - `blackbox-test-reviewer` - Requirements traceability
+   - `acceptance-test-reviewer` - Acceptance criteria validation
    - `common-sense-agent` - UX and safety review
+   - `language-framework-expert` - Best practices review
 6. **PR**: `pr-creator` creates the pull request
 7. **Review Fix**: `/dev-review-fix <pr>` addresses review comments
 8. **CI Fix**: `/dev-ci-fix <pr>` resolves CI failures
