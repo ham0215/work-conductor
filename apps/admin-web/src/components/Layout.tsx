@@ -17,9 +17,7 @@ export function Layout() {
   return (
     <div className="layout">
       {isMockAuthEnabled && (
-        <div className="mock-mode-banner">
-          Mock Authentication Mode - For development only
-        </div>
+        <div className="mock-mode-banner">Mock Authentication Mode - For development only</div>
       )}
       <header className="layout-header">
         <div className="header-brand">
