@@ -2,6 +2,11 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import './Layout.css'
 
+// Check if mock auth is enabled
+const isMockAuthEnabled =
+  import.meta.env.VITE_AUTH_MOCK_ENABLED === 'true' &&
+  import.meta.env.VITE_ENVIRONMENT !== 'production'
+
 export function Layout() {
   const { user, signOut } = useAuth()
 
@@ -11,6 +16,11 @@ export function Layout() {
 
   return (
     <div className="layout">
+      {isMockAuthEnabled && (
+        <div className="mock-mode-banner">
+          Mock Authentication Mode - For development only
+        </div>
+      )}
       <header className="layout-header">
         <div className="header-brand">
           <h1>Work Conductor Admin</h1>
