@@ -15,6 +15,11 @@ const { MockGoogleAuthProvider, mockOnAuthStateChanged, mockSignInWithPopup, moc
     }
   })
 
+// Mock the firebase service module to prevent validation errors
+vi.mock('../services/firebase', () => ({
+  auth: {},
+}))
+
 vi.mock('firebase/app', () => ({
   initializeApp: vi.fn(() => ({})),
 }))

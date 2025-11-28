@@ -17,6 +17,7 @@ credentials.json
 service-account.json
 *-credentials.json
 secrets/
+certs/
 
 # macOS
 .DS_Store
