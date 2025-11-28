@@ -1,6 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { vi, beforeEach, describe, it, expect } from 'vitest'
 
+// Use vi.hoisted to ensure env stubbing happens before module evaluation
+vi.hoisted(() => {
+  vi.stubEnv('VITE_AUTH_MOCK_ENABLED', 'false')
+})
+
 // Mock Firebase - use vi.hoisted for class that needs to be available during mock hoisting
 const { MockGoogleAuthProvider } = vi.hoisted(() => {
   return {
@@ -9,6 +14,11 @@ const { MockGoogleAuthProvider } = vi.hoisted(() => {
     },
   }
 })
+
+// Mock the firebase service module to prevent validation errors
+vi.mock('./services/firebase', () => ({
+  auth: {},
+}))
 
 vi.mock('firebase/app', () => ({
   initializeApp: vi.fn(() => ({})),
