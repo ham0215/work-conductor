@@ -27,5 +27,13 @@ export default defineConfig(({ mode }) => {
     server: {
       https: httpsConfig,
     },
+    test: {
+      environment: 'jsdom',
+      setupFiles: ['./src/test/setup.ts'],
+      env: {
+        // Disable mock auth in tests (tests will mock Firebase directly)
+        VITE_AUTH_MOCK_ENABLED: 'false',
+      },
+    },
   }
 })
