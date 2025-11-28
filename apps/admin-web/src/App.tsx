@@ -1,6 +1,5 @@
+import { lazy, Suspense, type ComponentType, type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
-import { MockAuthProvider } from './contexts/MockAuthProvider'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { Layout } from './components/Layout'
 import { LoginPage } from './pages/LoginPage'
@@ -22,13 +21,31 @@ const isMockAuthEnabled =
   import.meta.env.VITE_AUTH_MOCK_ENABLED === 'true' &&
   import.meta.env.VITE_ENVIRONMENT !== 'production'
 
-// Select the appropriate auth provider
-const AuthProviderComponent = isMockAuthEnabled ? MockAuthProvider : AuthProvider
+// Lazy load auth providers to avoid loading Firebase when using mock auth
+const LazyAuthProvider = lazy(() =>
+  import('./contexts/AuthContext').then((m) => ({ default: m.AuthProvider }))
+)
+const LazyMockAuthProvider = lazy(() =>
+  import('./contexts/MockAuthProvider').then((m) => ({ default: m.MockAuthProvider }))
+)
+
+// Auth provider wrapper with suspense
+function AuthProviderWrapper({ children }: { children: ReactNode }) {
+  const Provider: ComponentType<{ children: ReactNode }> = isMockAuthEnabled
+    ? LazyMockAuthProvider
+    : LazyAuthProvider
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Provider>{children}</Provider>
+    </Suspense>
+  )
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <AuthProviderComponent>
+      <AuthProviderWrapper>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
@@ -50,7 +67,7 @@ function App() {
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </AuthProviderComponent>
+      </AuthProviderWrapper>
     </BrowserRouter>
   )
 }
