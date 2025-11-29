@@ -107,11 +107,7 @@ function DraggableOrgNode({
   }
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`org-node ${isDragging ? 'is-dragging' : ''}`}
-    >
+    <div ref={setNodeRef} style={style} className={`org-node ${isDragging ? 'is-dragging' : ''}`}>
       {isEditing ? (
         <div className="node-edit-form">
           <div className="form-row">
