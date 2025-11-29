@@ -85,7 +85,7 @@ export function DeleteConfirmationModal({
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="delete-modal-title"
-        aria-describedby="delete-modal-description"
+        {...(childCount > 0 ? { 'aria-describedby': 'delete-modal-description' } : {})}
       >
         <div className="modal-header danger">
           <div className="header-icon">

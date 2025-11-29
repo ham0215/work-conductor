@@ -95,11 +95,10 @@ function DraggableOrgNode({
   onCancelEdit,
   onEditFormChange,
 }: DraggableOrgNodeProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isOver } =
-    useSortable({
-      id: node.id,
-      disabled: isEditing,
-    })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: node.id,
+    disabled: isEditing,
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -111,7 +110,7 @@ function DraggableOrgNode({
     <div
       ref={setNodeRef}
       style={style}
-      className={`org-node ${isDragging ? 'is-dragging' : ''} ${isOver ? 'is-over' : ''}`}
+      className={`org-node ${isDragging ? 'is-dragging' : ''}`}
     >
       {isEditing ? (
         <div className="node-edit-form">
@@ -273,12 +272,17 @@ export function OrgChartEditor({ nodes, onChange }: OrgChartEditorProps) {
     )
 
     // Recalculate levels after parent change
+    // SEC-L1: Added depth limit to prevent infinite loop from circular references
     const recalculateLevels = (nodeList: FlatNode[]): FlatNode[] => {
       const nodeMap = new Map(nodeList.map((n) => [n.id, n]))
+      const maxDepth = 100
       return nodeList.map((n) => {
         let level = 0
         let current = n
-        while (current.parentId) {
+        const visited = new Set<string>()
+        while (current.parentId && level < maxDepth) {
+          if (visited.has(current.id)) break // Circular reference detected
+          visited.add(current.id)
           level++
           const parent = nodeMap.get(current.parentId)
           if (!parent) break
